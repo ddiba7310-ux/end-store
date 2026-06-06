@@ -185,27 +185,58 @@ href="https://wa.me/201032407286?text=أرغب%20في%20طلب%20طقم%20حري
 </div>
 </div>
 
-</section>
-
-<section class="contact">
-<h2>تواصل معنا</h2>
-
-<p>📞 01032407286</p>
-
-<p>📍 أبو حماد - السناجرة</p>
-
-<br>
-
-<a class="btn"
-href="https://wa.me/201032407286">
-تواصل عبر واتساب
-</a>
-
+<section class="products" id="productsContainer">
 </section>
 
 <footer>
 © 2026 LUXORA - All Rights Reserved
 </footer>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+const firebaseConfig = {
+apiKey: "AIzaSyANqRkwjMR8ukWtkc7Fci8hSLtWTPTIn7A",
+authDomain: "luxora-store-4fdc5.firebaseapp.com",
+projectId: "luxora-store-4fdc5",
+storageBucket: "luxora-store-4fdc5.firebasestorage.app",
+messagingSenderId: "632646390272",
+appId: "1:632646390272:web:51afe9fdc2ea47030a7ee5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadProducts(){
+const snapshot = await getDocs(collection(db,"products"));
+const container = document.getElementById("productsContainer");
+
+if(!container) return;
+
+container.innerHTML = "";
+
+snapshot.forEach((doc)=>{
+const product = doc.data();
+
+container.innerHTML += `
+<div class="card">
+<img src="${product.image}">
+<div class="card-body">
+<h3>${product.name}</h3>
+<div class="price">${product.price} جنيه</div>
+
+<a class="order-btn"
+href="https://wa.me/201032407286?text=أرغب في طلب ${product.name}">
+اطلب الآن
+</a>
+
+</div>
+</div>
+`;
+});
+}
+
+loadProducts();
+</script>
 </body>
 </html>
