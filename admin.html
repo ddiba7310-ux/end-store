@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,33 +6,53 @@
 <style>
 body{font-family:Arial;background:#111;color:#fff;padding:20px}
 input{display:block;width:100%;margin:10px 0;padding:10px}
-button{padding:10px 20px;background:gold;border:none}
+button{padding:10px 20px;background:gold;border:none;cursor:pointer}
 </style>
 </head>
-<body>
-
-<h1>لوحة إدارة LUXORA</h1>
-
-<input id="name" placeholder="اسم المنتج">
+<body><h1>لوحة إدارة LUXORA</h1><input id="name" placeholder="اسم المنتج">
 <input id="price" placeholder="السعر">
-<input id="image" placeholder="رابط الصورة">
+<input id="image" placeholder="رابط الصورة"><button onclick="addProduct()">إضافة المنتج</button>
 
-<button onclick="addProduct()">إضافة</button>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import {
+getFirestore,
+collection,
+addDoc
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-<script>
-function addProduct(){
-let products = JSON.parse(localStorage.getItem('products')||'[]');
+const firebaseConfig = {
+apiKey: "AIzaSyANqRkwjMR8ukWtkc7Fci8hSLtWTPTIn7A",
+authDomain: "luxora-store-4fdc5.firebaseapp.com",
+projectId: "luxora-store-4fdc5",
+storageBucket: "luxora-store-4fdc5.firebasestorage.app",
+messagingSenderId: "632646390272",
+appId: "1:632646390272:web:51afe9fdc2ea47030a7ee5",
+measurementId: "G-BL3YXLYG51"
+};
 
-products.push({
-name:document.getElementById('name').value,
-price:document.getElementById('price').value,
-image:document.getElementById('image').value
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.addProduct = async function(){
+
+const name = document.getElementById('name').value;
+const price = document.getElementById('price').value;
+const image = document.getElementById('image').value;
+
+await addDoc(collection(db,"products"),{
+name:name,
+price:price,
+image:image
 });
 
-localStorage.setItem('products',JSON.stringify(products));
-alert('تمت الإضافة');
-}
-</script>
+alert("تمت إضافة المنتج بنجاح");
 
+document.getElementById('name').value="";
+document.getElementById('price').value="";
+document.getElementById('image').value="";
+}
+</script></body>
+</html>
 </body>
 </html>
